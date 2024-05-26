@@ -1,30 +1,50 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fasum/screens/sign_in_screen.dart';
+import 'package:provider/provider.dart';
+import '../providers/post_provider.dart';
+import 'add_post_screen.dart';
+
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-  Future<void> signOut(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => SignInScreen()));
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        actions: [
-          IconButton(
-            onPressed: () {
-              signOut(context);
+      appBar: AppBar(title: Text('Home')),
+      body: Consumer<PostProvider>(
+        builder: (context, postProvider, child) {
+          return ListView.builder(
+            itemCount: postProvider.posts.length,
+            itemBuilder: (context, index) {
+              final post = postProvider.posts[index];
+              return Card(
+                child: Column(
+                  children: [
+                    post.imageUrl.contains('http')
+                        ? Image.network(post.imageUrl)
+                        : Image.file(File(post.imageUrl)),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(post.description, style: TextStyle(fontSize: 16)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(post.comment, style: TextStyle(fontSize: 14)),
+                    ),
+                  ],
+                ),
+              );
             },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+          );
+        },
       ),
-      body: const Center(
-        child: Text('You have logged In'),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddPostScreen()),
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

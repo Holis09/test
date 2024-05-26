@@ -1,59 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fasum/screens/home_screen.dart';
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
-  @override
-  SignUpScreenState createState() => SignUpScreenState();
-}
-class SignUpScreenState extends State<SignUpScreen> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+import 'sign_in_screen.dart';
+
+class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-      ),
+      appBar: AppBar(title: Text('Sign Up')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const SizedBox(height: 32.0),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),),
-              obscureText: true,
-            ),
-            const SizedBox(height: 16.0),
+            TextField(decoration: InputDecoration(labelText: 'Email')),
+            TextField(decoration: InputDecoration(labelText: 'Password'), obscureText: true),
+            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                try {
-                  await
-                  FirebaseAuth.instance.createUserWithEmailAndPassword(
-                    // <-- Gunakan FirebaseAuth.instance
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                  );
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => const
-                    HomeScreen()),
-                  );
-                } catch (error) {
-                  print(error.toString());
-                }
+              onPressed: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignInScreen()));
               },
-              child: const Text('Sign Up'),
+              child: Text('Sign Up'),
             ),
           ],
         ),
