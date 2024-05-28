@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -25,7 +24,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
   String? _imageUrl;
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _pickedFile = pickedFile;
@@ -82,7 +82,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     description: _descriptionController.text,
                     comment: _commentController.text,
                   );
-                  Provider.of<PostProvider>(context, listen: false).addPost(newPost);
+                  Provider.of<PostProvider>(context, listen: false)
+                      .addPost(newPost);
                   Navigator.pop(context);
                 }
               },
